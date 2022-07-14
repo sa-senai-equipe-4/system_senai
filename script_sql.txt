@@ -1,0 +1,40 @@
+CREATE TABLE public.clientes (
+	codigo serial NOT NULL,
+	cpf varchar(14) NULL,
+	dt_admissao date NOT NULL,
+	endereco_completo varchar(500) NULL,
+	nm_completo varchar(50) NULL,
+	rg varchar(10) NULL,
+	codigo_usuario int4 NOT NULL,
+	CONSTRAINT clientes_pkey PRIMARY KEY (codigo)
+);
+
+ALTER TABLE public.clientes ADD CONSTRAINT fkpg1fk9o2qghrs6x55ssiko20i FOREIGN KEY (codigo_usuario) REFERENCES public.usuarios(codigo);
+
+
+
+CREATE TABLE public.promissorias (
+	codigo serial NOT NULL,
+	dt_vencimento date NOT NULL,
+	descricao varchar(1500) NULL,
+	quitado varchar(255) NOT NULL,
+	valor numeric(19, 2) NOT NULL,
+	codigo_cliente int4 NOT NULL,
+	CONSTRAINT promissorias_pkey PRIMARY KEY (codigo)
+);
+
+ALTER TABLE public.promissorias ADD CONSTRAINT fki2an38a0i7oogsftx81u3vfyn FOREIGN KEY (codigo_cliente) REFERENCES public.clientes(codigo);
+
+
+
+CREATE TABLE public.usuarios (
+	codigo serial NOT NULL,
+	login varchar(20) NULL,
+	perfil varchar(255) NOT NULL,
+	senha varchar(10) NULL,
+	CONSTRAINT usuarios_pkey PRIMARY KEY (codigo)
+);
+
+
+
+INSERT INTO public.usuarios (login, perfil, senha) VALUES ('laudelino.neto', 'GESTOR', '123456')
