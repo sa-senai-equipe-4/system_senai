@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.GroupLayout;
@@ -11,6 +13,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,10 +23,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumnModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import br.com.senai.sa.client.ClienteClient;
 import br.com.senai.sa.dto.Cliente;
+import br.com.senai.sa.exception.ErroFormatter;
 import br.com.senai.sa.view.table.ClienteListagemTableModel;
 
 @Component
@@ -37,14 +43,28 @@ public class TelaListagem extends JFrame {
 	
 	@Autowired
 	private TelaInserirEditarCliente telaInserirEditarCliente;
+	
+	@Autowired
+	private ErroFormatter erroFormatter;
 
 	@Autowired
 	private ClienteClient clienteClient;
 	
+	@Lazy
+	@Autowired
+	private TelaPrincipalGestor telaPrincipalGestor;
+	
 	public TelaListagem() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/image.png"));
 		setTitle("Cliente (Listagem) - SA System 1.4");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+				telaPrincipalGestor.setVisible(true);
+			}
+		});
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 780, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -53,14 +73,38 @@ public class TelaListagem extends JFrame {
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				telaInserirEditarCliente.setLocationRelativeTo(null);
-				telaInserirEditarCliente.setVisible(true);
+				telaInserirEditarCliente.modoDeInsercao();
 				setVisible(false);
 			}
 		});
 		btnAdicionar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnRemover = new JButton("Remover");
+		btnRemover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+
+					int linhaSelecionada = table.getSelectedRow();
+					ClienteListagemTableModel model = (ClienteListagemTableModel)table.getModel();
+					
+					Cliente clienteSelecionado = model.getPor(linhaSelecionada);
+					
+					int opcaoSelecionada = JOptionPane.showConfirmDialog(
+							contentPane, "Deseja remover?", "Remoção", JOptionPane.YES_NO_OPTION);
+					
+					if (opcaoSelecionada == JOptionPane.YES_OPTION) {			
+						clienteClient.excluir(clienteSelecionado);
+						((ClienteListagemTableModel)table.getModel()).removerPor(linhaSelecionada);;
+						table.updateUI();
+						JOptionPane.showMessageDialog(contentPane, "Cliente removido com sucesso");
+					}
+					
+				} catch (HttpClientErrorException ex) {
+					String msg = erroFormatter.formatar(ex);
+					JOptionPane.showMessageDialog(btnRemover, msg);
+				}
+			}
+		});
 		btnRemover.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnEditar = new JButton("Editar");
@@ -86,13 +130,18 @@ public class TelaListagem extends JFrame {
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Cliente> clientes = clienteClient.listarPor(edtFiltro.getText());
-				ClienteListagemTableModel model = new ClienteListagemTableModel(clientes);
-				table.setModel(model);
-				TableColumnModel cm = table.getColumnModel();
-				cm.getColumn(0).setPreferredWidth(50);
-				cm.getColumn(1).setPreferredWidth(500);
-				table.updateUI();
+				try {
+					List<Cliente> clientes = clienteClient.listarPor(edtFiltro.getText());
+					ClienteListagemTableModel model = new ClienteListagemTableModel(clientes);
+					table.setModel(model);
+					TableColumnModel cm = table.getColumnModel();
+					cm.getColumn(0).setPreferredWidth(50);
+					cm.getColumn(1).setPreferredWidth(500);
+					table.updateUI();
+				} catch (HttpClientErrorException ex) {
+					String msg = erroFormatter.formatar(ex);
+					JOptionPane.showMessageDialog(btnListar, msg);
+				}
 			}
 		});
 		btnListar.setFont(new Font("Dialog", Font.BOLD, 14));

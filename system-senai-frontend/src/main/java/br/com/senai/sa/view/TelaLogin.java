@@ -90,8 +90,7 @@ public class TelaLogin extends JFrame {
 						setVisible(false);
 					}
 					if(usuarioLogado.getPerfil().equals(Perfil.CLIENTE)) {
-						telaPrincipalCliente.setLocationRelativeTo(null);
-						telaPrincipalCliente.setVisible(true);
+						telaPrincipalCliente.carregarTela(usuarioLogado);
 						setVisible(false);
 					}
 					

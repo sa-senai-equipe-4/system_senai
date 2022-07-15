@@ -4,11 +4,9 @@ import java.time.LocalDate;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 public class Cliente {
 	
 	@EqualsAndHashCode.Include
@@ -25,5 +23,12 @@ public class Cliente {
 	private String nomeCompleto;
 	
 	private Usuario usuario;
+
+	@Override
+	public String toString() {
+		return nomeCompleto;
+	}
+	
+	
 
 }

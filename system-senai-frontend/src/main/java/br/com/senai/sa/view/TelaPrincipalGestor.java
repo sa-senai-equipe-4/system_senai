@@ -37,6 +37,9 @@ public class TelaPrincipalGestor extends JFrame {
 	@Autowired
 	private TelaListagem telaListagem;
 	
+	@Autowired
+	private TelaListagemPromissoria telaListagemPromissoria;
+	
 	@Lazy
 	@Autowired
 	private TelaLogin telaLogin;
@@ -78,12 +81,18 @@ public class TelaPrincipalGestor extends JFrame {
 		btnClientes.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnPromissórias = new JButton("Promissórias");
+		btnPromissórias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaListagemPromissoria.setVisible(true);
+				setVisible(false);
+			}
+		});
 		btnPromissórias.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnSair = new JButton("Sair");
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				System.exit(0);
 			}
 		});
 		btnSair.setFont(new Font("Dialog", Font.BOLD, 14));

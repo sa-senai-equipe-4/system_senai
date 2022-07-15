@@ -1,10 +1,11 @@
 package br.com.senai.sa.view;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.GroupLayout;
@@ -12,6 +13,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,11 +23,18 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumnModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
+import br.com.senai.sa.client.ClienteClient;
 import br.com.senai.sa.client.PromissoriaClient;
+import br.com.senai.sa.dto.Cliente;
 import br.com.senai.sa.dto.Promissoria;
+import br.com.senai.sa.exception.ErroFormatter;
 import br.com.senai.sa.view.table.PromissoriaListagemTableModel;
 
+@Component
 public class TelaListagemPromissoria extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -36,42 +45,95 @@ public class TelaListagemPromissoria extends JFrame {
 	
 	@Autowired
 	private PromissoriaClient promissoriaClient;
+	
+	@Autowired
+	private ErroFormatter erroFormatter;
+	
+	@Autowired
+	private TelaPromissoriaInserirEditar telaPromissoriaInserirEditar;
+	
+	@Autowired
+	private ClienteClient clienteClient;
+	
+	@Lazy
+	@Autowired
+	private TelaPrincipalGestor telaPrincipalGestor;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaListagem frame = new TelaListagem();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	public TelaListagemPromissoria() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/image.png"));
+		setTitle("Promissória (Listagem) - SA System 1.4");
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+				telaPrincipalGestor.setVisible(true);
 			}
 		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public TelaListagemPromissoria() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Senai\\Documents\\gustavo\\saSenai\\src\\main\\resources\\image.png"));
-		setTitle("Promissória (Listagem) - SA System 1.4");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 780, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
 		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaPromissoriaInserirEditar.modoDeInsercao();
+				List<Cliente> clientes = clienteClient.listarTodos();
+				
+				telaPromissoriaInserirEditar.carregarCombos(clientes);
+				setVisible(false);
+			}
+		});
 		btnAdicionar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnRemover = new JButton("Remover");
+		btnRemover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+
+					int linhaSelecionada = table.getSelectedRow();
+					PromissoriaListagemTableModel model = (PromissoriaListagemTableModel)table.getModel();
+					
+					Promissoria promissoriaSelecionada = model.getPor(linhaSelecionada);
+					
+					int opcaoSelecionada = JOptionPane.showConfirmDialog(
+							contentPane, "Deseja remover?", "Remoção", JOptionPane.YES_NO_OPTION);
+					
+					if (opcaoSelecionada == JOptionPane.YES_OPTION) {			
+						promissoriaClient.excluir(promissoriaSelecionada);
+						((PromissoriaListagemTableModel)table.getModel()).removerPor(linhaSelecionada);;
+						table.updateUI();
+						JOptionPane.showMessageDialog(contentPane, "Promissória removida com sucesso");
+					}
+					
+				} catch (HttpClientErrorException ex) {
+					String msg = erroFormatter.formatar(ex);
+					JOptionPane.showMessageDialog(btnRemover, msg);
+				}
+			}
+		});
 		btnRemover.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int linhaSelecionada = table.getSelectedRow();
+				try {
+					PromissoriaListagemTableModel model = (PromissoriaListagemTableModel)table.getModel();
+					
+					Promissoria promissoriaSelecionada = model.getPor(linhaSelecionada);
+					telaPromissoriaInserirEditar.carregarTela(promissoriaSelecionada);
+					
+					List<Cliente> clientes = clienteClient.listarTodos();
+					
+					telaPromissoriaInserirEditar.carregarCombos(clientes);
+					setVisible(false);
+				} catch (HttpClientErrorException ex) {
+					String msg = erroFormatter.formatar(ex);
+					JOptionPane.showMessageDialog(btnRemover, msg);
+				}
+			}
+		});
 		btnEditar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JLabel lblFiltro = new JLabel("Filtro");
@@ -84,14 +146,19 @@ public class TelaListagemPromissoria extends JFrame {
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Promissoria> promissorias = promissoriaClient.listarPor(edtFiltro.getText());
-				PromissoriaListagemTableModel model = new PromissoriaListagemTableModel(promissorias);
-				table.setModel(model);
-				TableColumnModel cm = table.getColumnModel();
-				cm.getColumn(0).setPreferredWidth(50);
-				cm.getColumn(1).setPreferredWidth(100);
-				cm.getColumn(2).setPreferredWidth(500);
-				table.updateUI();
+				try {
+					List<Promissoria> promissorias = promissoriaClient.listarPor(edtFiltro.getText());
+					PromissoriaListagemTableModel model = new PromissoriaListagemTableModel(promissorias);
+					table.setModel(model);
+					TableColumnModel cm = table.getColumnModel();
+					cm.getColumn(0).setPreferredWidth(50);
+					cm.getColumn(1).setPreferredWidth(100);
+					cm.getColumn(2).setPreferredWidth(500);
+					table.updateUI();
+				} catch (HttpClientErrorException ex) {
+					String msg = erroFormatter.formatar(ex);
+					JOptionPane.showMessageDialog(btnListar, msg);
+				}
 			}
 		});
 		btnListar.setFont(new Font("Dialog", Font.BOLD, 14));

@@ -77,5 +77,34 @@ public class ClienteClient {
 		
 		return clientes;
 	}
+	
+	public Cliente buscarPorUsuarioCom(Integer codigo) {
+		
+		RestTemplate httpClient = builder.build();
+		
+		Cliente clienteEncontrado = 
+				httpClient.getForObject(urlEndpoint + resource + "/usuario/" + codigo, Cliente.class);
+		
+		return clienteEncontrado;
+	}
+	
+	public List<Cliente> listarTodos(){
+		
+		RestTemplate httpClient = builder.build();
+		
+		@SuppressWarnings("unchecked")
+		List<LinkedHashMap<String, Object>> response = httpClient.getForObject(
+				urlEndpoint + resource + "/listar-todos", List.class);
+		
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		
+		for (LinkedHashMap<String, Object> c : response) {
+			Cliente cliente = mapper.convertValue(c, Cliente.class);
+			clientes.add(cliente);
+		}
+		
+		return clientes;
+	}
+	
 
 }
