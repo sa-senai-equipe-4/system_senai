@@ -1,49 +1,53 @@
 package br.com.senai.sa;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.HttpClientErrorException;
 
-import br.com.senai.sa.client.ClienteClient;
-import br.com.senai.sa.client.LoginClient;
-import br.com.senai.sa.client.PromissoriaClient;
-import br.com.senai.sa.dto.Cliente;
-import br.com.senai.sa.dto.Promissoria;
-import br.com.senai.sa.dto.Usuario;
-import br.com.senai.sa.dto.enums.Quitado;
+import br.com.senai.sa.view.TelaLogin;
 
 @SpringBootApplication
 public class InitApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(InitApp.class, args);
+		SpringApplicationBuilder builder = 
+				new SpringApplicationBuilder(InitApp.class);
+		builder.headless(false);
+		builder.run(args);
 	}
 	
 	@Autowired
-	private ClienteClient clienteClient;
+	private TelaLogin login;
 	
-	@Autowired
-	private PromissoriaClient promissoriaClient;
-	
-	@Autowired
-	private LoginClient loginClient;
-
 	@Bean	
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
-			try {
+			try {				
 				
-				Usuario usuarioLogado = loginClient.loginPor("laudelina.neto", "123456");
-				System.out.println(usuarioLogado);
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {	
+							login.setLocationRelativeTo(null);
+							login.setVisible(true);
+						} catch (Exception e) {							
+							JOptionPane.showMessageDialog(null, e.getMessage());
+						}
+					}
+				});
+				
+				
+//				Usuario usuarioLogado = loginClient.loginPor("laudelino.neto", "123456");
+//				System.out.println(usuarioLogado);
 				
 				
 				
