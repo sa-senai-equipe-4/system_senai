@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -47,8 +48,8 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	private JTextField edtValor;
 	private JTextField edtVencimento;
 	private JTextPane edtDescricao;
-	private JComboBox<Cliente> comboBox_1;
-	private JComboBox<Quitado> comboBox;
+	private JComboBox<Cliente> comboBoxClientes;
+	private JComboBox<Quitado> comboBoxQuitado;
 
 	@Autowired
 	private ErroFormatter erroFormatter;
@@ -72,9 +73,9 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		this.edtVencimento.setText(dataFormatada);
 		this.edtDescricao.setText(promissoriaSalva.getDescricao());
 		if(promissoriaSalva.getQuitado().equals(Quitado.SIM)) {
-			this.comboBox.setSelectedIndex(0);
+			this.comboBoxQuitado.setSelectedIndex(0);
 		}else {
-			this.comboBox.setSelectedIndex(1);
+			this.comboBoxQuitado.setSelectedIndex(1);
 		}
 		
 		promissoriaSalva.getCliente();// setar na combobox
@@ -84,7 +85,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	
 	public void carregarCombos(List<Cliente> clientes) {
 		clientes.forEach(c -> {
-			comboBox_1.addItem(c);
+			comboBoxClientes.addItem(c);
 		});
 	}
 	
@@ -93,7 +94,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		this.edtValor.setText("");
 		this.edtDescricao.setText("");
 		this.edtVencimento.setText("");
-		this.comboBox.setSelectedIndex(1);
+		this.comboBoxQuitado.setSelectedIndex(1);
 		//setar combobox cliente pra null
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -146,15 +147,16 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		lblCliente.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnSalvar = new JButton("Salvar");
+		getRootPane().setDefaultButton(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
 					if (promissoriaSalva != null) {
-						promissoriaSalva.setCliente((Cliente)comboBox_1.getSelectedItem());
+						promissoriaSalva.setCliente((Cliente)comboBoxClientes.getSelectedItem());
 //						promissoriaSalva.setDataDeVencimento(edtVencimento.getText());
 						promissoriaSalva.setDescricao(edtDescricao.getText());
-						if(comboBox_1.getSelectedIndex() == 0) {
+						if(comboBoxClientes.getSelectedIndex() == 0) {
 							promissoriaSalva.setQuitado(Quitado.SIM);
 						}else {
 							promissoriaSalva.setQuitado(Quitado.NAO);
@@ -165,10 +167,10 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						JOptionPane.showMessageDialog(contentPane, "Promissória atualizada com sucesso");
 					}else {
 						Promissoria novaPromissoria = new Promissoria();
-						novaPromissoria.setCliente((Cliente)comboBox_1.getSelectedItem());
+						novaPromissoria.setCliente((Cliente)comboBoxClientes.getSelectedItem());
 //						novaPromissoria.setDataDeVencimento(edtVencimento.getText());
 						novaPromissoria.setDescricao(edtDescricao.getText());
-						if(comboBox_1.getSelectedIndex() == 0) {
+						if(comboBoxClientes.getSelectedIndex() == 0) {
 							novaPromissoria.setQuitado(Quitado.SIM);
 						}else {
 							novaPromissoria.setQuitado(Quitado.NAO);
@@ -192,13 +194,17 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		
 		edtDescricao = new JTextPane();
 		
-		comboBox = new JComboBox<Quitado>();
-		comboBox.setFont(new Font("Dialog", Font.BOLD, 14));
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"SIM", "NÃO"}));
+		comboBoxQuitado = new JComboBox<Quitado>();
+		comboBoxQuitado.setFont(new Font("Dialog", Font.BOLD, 14));
+		comboBoxQuitado.setModel(new DefaultComboBoxModel(new String[] {"SIM", "NÃO"}));
 		
-		comboBox_1 = new JComboBox();
 		
-		comboBox_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		//Colocar array list no ComboBox
+		ArrayList<String> lista = new ArrayList<String>();
+		lista.add("teste");
+		comboBoxClientes = new JComboBox(lista.toArray());
+		
+		comboBoxClientes.setFont(new Font("Dialog", Font.BOLD, 14));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -206,7 +212,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(comboBox_1, 0, 730, Short.MAX_VALUE)
+							.addComponent(comboBoxClientes, 0, 730, Short.MAX_VALUE)
 							.addContainerGap())
 						.addComponent(edtDescricao, GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
 						.addComponent(btnConsultar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
@@ -221,7 +227,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblQuitado)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE))
+								.addComponent(comboBoxQuitado, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE))
 							.addContainerGap(276, Short.MAX_VALUE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(lblCliente)
@@ -245,11 +251,11 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						.addComponent(edtValor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 							.addComponent(edtVencimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(comboBoxQuitado, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)))
 					.addGap(18)
 					.addComponent(lblCliente)
 					.addGap(18)
-					.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+					.addComponent(comboBoxClientes, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(lblDescricao)
 					.addGap(18)

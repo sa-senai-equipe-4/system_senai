@@ -128,6 +128,7 @@ public class TelaListagem extends JFrame {
 		edtFiltro.setColumns(10);
 		
 		JButton btnListar = new JButton("Listar");
+		getRootPane().setDefaultButton(btnListar);
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

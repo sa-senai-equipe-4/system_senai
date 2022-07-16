@@ -146,6 +146,7 @@ public class TelaInserirEditarCliente extends JFrame {
 		lblSenha.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnSalvar = new JButton("Salvar");
+		getRootPane().setDefaultButton(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
