@@ -32,6 +32,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
+import br.com.senai.sa.client.ClienteClient;
 import br.com.senai.sa.client.PromissoriaClient;
 import br.com.senai.sa.dto.Cliente;
 import br.com.senai.sa.dto.Promissoria;
@@ -58,6 +59,9 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	@Lazy
 	@Autowired
 	private PromissoriaClient promissoriaClient;
+	
+	@Autowired
+	private ClienteClient clienteClient;
 	
 	@Lazy
 	@Autowired
@@ -127,7 +131,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 				telaListagemPromissoria.setLocationRelativeTo(null);
 				comboBoxClientes = new JComboBox<Cliente>();
 				comboBoxClientes.setSelectedItem(null);
-				promissoriaSalva = null;
+				promissoriaSalva = new Promissoria();
 			}
 		});
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -139,13 +143,12 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		JButton btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setDefaultCloseOperation(EXIT_ON_CLOSE);
 				setVisible(false);
 				telaListagemPromissoria.setVisible(true);
 				telaListagemPromissoria.setLocationRelativeTo(null);
 				comboBoxClientes = new JComboBox<Cliente>();
 				comboBoxClientes.setSelectedItem(null);
-				promissoriaSalva = null;
+				promissoriaSalva = new Promissoria();
 			}
 		});
 		btnConsultar.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -179,9 +182,10 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 					if (promissoriaSalva != null) {
 						
 						Cliente clienteSelecionado = (Cliente)comboBoxClientes.getSelectedItem();
-						System.out.println("========>"+clienteSelecionado.getCodigo());
+						JOptionPane.showMessageDialog(null, "Cliente selecionado é o "+clienteSelecionado.getCodigo()+" - "+ clienteSelecionado.getNomeCompleto());
+						Cliente clienteEncontrado = clienteClient.buscarPor(clienteSelecionado.getCodigo());
 						
-						promissoriaSalva.setCliente(clienteSelecionado);
+						promissoriaSalva.setCliente(clienteEncontrado);
 						promissoriaSalva.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						promissoriaSalva.setDescricao(edtDescricao.getText());
 						promissoriaSalva.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());

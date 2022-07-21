@@ -3,6 +3,8 @@ package br.com.senai.sa.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -28,7 +30,9 @@ public class PromissoriaService {
 	@Autowired
 	private ClienteService clienteService;
 	
-	@Transactional
+	@PersistenceContext
+	private EntityManager em;
+	
 	@Validated(AoInserir.class)
 	public Promissoria inserir(@Valid Promissoria promissoria) {
 		this.clienteService.buscarPor(promissoria.getCliente().getCodigo());
@@ -37,9 +41,10 @@ public class PromissoriaService {
 	
 	@Transactional
 	@Validated(AoAlterar.class)
-	public Promissoria alterar(@Valid Promissoria promissoriaSalvo) {
-		this.buscarPor(promissoriaSalvo.getCodigo());
-		return promissoriasRepository.save(promissoriaSalvo);
+	public Promissoria alterar(@Valid Promissoria promissoriaSalva) {
+		this.buscarPor(promissoriaSalva.getCodigo());
+		this.em.detach(promissoriasRepository.save(promissoriaSalva));
+		return promissoriasRepository.buscarPor(promissoriaSalva.getCodigo()).get();
 	}
 	
 	public void remover(@NotNull(message = "O código da promissória deve ser informado") Integer codigo) {

@@ -84,6 +84,7 @@ public class TelaPrincipalGestor extends JFrame {
 		btnPromissórias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaListagemPromissoria.setVisible(true);
+				telaListagemPromissoria.setLocationRelativeTo(null);
 				setVisible(false);
 			}
 		});
