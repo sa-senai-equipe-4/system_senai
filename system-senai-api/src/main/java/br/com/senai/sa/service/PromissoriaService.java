@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import br.com.senai.sa.entity.Promissoria;
@@ -27,12 +28,14 @@ public class PromissoriaService {
 	@Autowired
 	private ClienteService clienteService;
 	
+	@Transactional
 	@Validated(AoInserir.class)
 	public Promissoria inserir(@Valid Promissoria promissoria) {
 		this.clienteService.buscarPor(promissoria.getCliente().getCodigo());
 		return promissoriasRepository.save(promissoria);
 	}
 	
+	@Transactional
 	@Validated(AoAlterar.class)
 	public Promissoria alterar(@Valid Promissoria promissoriaSalvo) {
 		this.buscarPor(promissoriaSalvo.getCodigo());

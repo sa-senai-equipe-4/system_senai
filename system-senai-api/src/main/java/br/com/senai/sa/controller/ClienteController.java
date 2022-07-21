@@ -39,6 +39,11 @@ public class ClienteController {
 		return ResponseEntity.ok(mapConverter.toJsonMap(clienteService.buscarPor(codigo)));
 	}
 	
+	@GetMapping("/codigo-usuario/{codigo-usuario}")
+	public ResponseEntity<?> buscarUsuarioPor(@PathVariable(name = "codigo-usuario") Integer codigoDoUsuario){
+		return ResponseEntity.ok(mapConverter.toJsonMap(clienteService.buscarPorCodigoDeUsuario(codigoDoUsuario)));
+	}
+	
 	@PutMapping
 	public ResponseEntity<?> alterar(@RequestBody Cliente cliente){
 		return ResponseEntity.ok(mapConverter.toJsonMap(clienteService.alterar(cliente)));
@@ -53,6 +58,11 @@ public class ClienteController {
 	@GetMapping
 	public ResponseEntity<?> buscarPor(@RequestParam(name = "nome-completo") String nomeCompleto){
 		return ResponseEntity.ok(mapConverter.toJsonList(clienteService.buscarPor(nomeCompleto)));
+	}
+	
+	@GetMapping("/listar-todos")
+	public ResponseEntity<?> listarTodos(){
+		return ResponseEntity.ok(mapConverter.toJsonList(clienteService.listarTodos()));
 	}
 
 }

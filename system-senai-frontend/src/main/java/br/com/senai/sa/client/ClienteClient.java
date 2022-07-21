@@ -83,7 +83,7 @@ public class ClienteClient {
 		RestTemplate httpClient = builder.build();
 		
 		Cliente clienteEncontrado = 
-				httpClient.getForObject(urlEndpoint + resource + "/usuario/" + codigo, Cliente.class);
+				httpClient.getForObject(urlEndpoint + resource + "/codigo-usuario/" + codigo, Cliente.class);
 		
 		return clienteEncontrado;
 	}

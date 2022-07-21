@@ -63,6 +63,7 @@ public class TelaEditarCliente extends JFrame {
 		this.edtRg.setText(clienteSalvo.getRg());
 		this.edtEndereco.setText(clienteSalvo.getEnderecoCompleto());
 		this.edtLogin.setText(clienteSalvo.getUsuario().getLogin());
+		this.edtSenha.setText(clienteSalvo.getUsuario().getSenha());
 		this.clienteSalvo = clienteSalvo;
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -99,7 +100,7 @@ public class TelaEditarCliente extends JFrame {
 		edtCpf.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtCpf.setColumns(10);
 		
-		edtRg = new JFormattedTextField(new MaskFormatter("#.###.###"));
+		edtRg = new JFormattedTextField(new MaskFormatter("##.###.###"));
 		edtRg.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtRg.setColumns(10);
 		

@@ -17,7 +17,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.KeyEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,6 @@ import br.com.senai.sa.client.LoginClient;
 import br.com.senai.sa.dto.Usuario;
 import br.com.senai.sa.dto.enums.Perfil;
 import br.com.senai.sa.exception.ErroFormatter;
-import java.awt.event.KeyAdapter;
 
 @Component
 public class TelaLogin extends JFrame {

@@ -38,11 +38,6 @@ public class Usuario {
 	@EqualsAndHashCode.Include
 	private Integer codigo;
 	
-//	@Column(name = "nm_completo")
-//	@NotEmpty(message = "O nome completo do usuário é obrigatório")
-//	@Size(min=2, max = 50, message = "O tamanho do nome completo do usuário deve estar entre 2 e 50 caracteres")
-//	private String nomeCompleto;
-	
 	@Column(name = "login")
 	@NotEmpty(message = "O login do cliente é obrigatório")
 	@Size(min=2, max = 20, message = "O tamanho do login do usuário deve estar entre 2 e 20 caracteres")

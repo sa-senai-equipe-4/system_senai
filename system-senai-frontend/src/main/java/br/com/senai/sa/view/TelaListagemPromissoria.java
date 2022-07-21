@@ -122,10 +122,10 @@ public class TelaListagemPromissoria extends JFrame {
 					PromissoriaListagemTableModel model = (PromissoriaListagemTableModel)table.getModel();
 					
 					Promissoria promissoriaSelecionada = model.getPor(linhaSelecionada);
-					telaPromissoriaInserirEditar.carregarTela(promissoriaSelecionada);
 					
 					List<Cliente> clientes = clienteClient.listarTodos();
 					
+					telaPromissoriaInserirEditar.carregarTela(promissoriaSelecionada);
 					telaPromissoriaInserirEditar.carregarCombos(clientes);
 					setVisible(false);
 				} catch (HttpClientErrorException ex) {

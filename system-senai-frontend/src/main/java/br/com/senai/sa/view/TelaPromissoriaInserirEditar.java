@@ -10,10 +10,8 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -39,6 +37,7 @@ import br.com.senai.sa.dto.Cliente;
 import br.com.senai.sa.dto.Promissoria;
 import br.com.senai.sa.dto.enums.Quitado;
 import br.com.senai.sa.exception.ErroFormatter;
+import lombok.Setter;
 
 @Component
 public class TelaPromissoriaInserirEditar extends JFrame {
@@ -48,7 +47,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	private JTextField edtValor;
 	private JTextField edtVencimento;
 	private JTextPane edtDescricao;
-	private JComboBox<Cliente> comboBoxClientes;
+	private JComboBox<Cliente> comboBoxClientes = new JComboBox<Cliente>();
 	private JComboBox<Quitado> comboBoxQuitado;
 
 	@Autowired
@@ -64,29 +63,39 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	@Autowired
 	private TelaListagemPromissoria telaListagemPromissoria;
 	
+	@Setter
+	private List<Cliente> clientesRegistrados;
+	
 	public void carregarTela(Promissoria promissoriaSalva) {
+		this.promissoriaSalva = promissoriaSalva;
 		this.edtValor.setText(promissoriaSalva.getValor().toString());
 		
-		String dataFormatada = LocalDate.parse(
-				promissoriaSalva.getDataDeVencimento().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		String dataFormatada = promissoriaSalva.getDataDeVencimento().format(formatter);
 		
 		this.edtVencimento.setText(dataFormatada);
 		this.edtDescricao.setText(promissoriaSalva.getDescricao());
-		if(promissoriaSalva.getQuitado().equals(Quitado.SIM)) {
-			this.comboBoxQuitado.setSelectedIndex(0);
-		}else {
-			this.comboBoxQuitado.setSelectedIndex(1);
-		}
 		
-		promissoriaSalva.getCliente();// setar na combobox
+		this.comboBoxQuitado.setSelectedItem(promissoriaSalva.getQuitado());
+		
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
 	public void carregarCombos(List<Cliente> clientes) {
+		this.clientesRegistrados = clientes;
+		
 		clientes.forEach(c -> {
 			comboBoxClientes.addItem(c);
+			if(promissoriaSalva != null && promissoriaSalva.getCliente().equals(c)) {
+				this.comboBoxClientes.setSelectedItem(c);
+			}
 		});
+		if(promissoriaSalva == null) {
+			this.comboBoxClientes.setSelectedItem(null);
+		}
+		
 	}
 	
 	public void modoDeInsercao() {
@@ -94,13 +103,19 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		this.edtValor.setText("");
 		this.edtDescricao.setText("");
 		this.edtVencimento.setText("");
-		this.comboBoxQuitado.setSelectedIndex(1);
-		//setar combobox cliente pra null
+		this.comboBoxQuitado.setSelectedItem(Quitado.NAO);
+		this.comboBoxClientes.setSelectedItem(null);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
+	public LocalDate converter(String[] valores) {
+		Integer dia = Integer.parseInt(valores[0]);
+		Integer mes = Integer.parseInt(valores[1]);
+		Integer ano = Integer.parseInt(valores[2]);
+		return LocalDate.of(ano, mes, dia);
+	}
+	
 	public TelaPromissoriaInserirEditar() throws ParseException {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/image.png"));
 		setTitle("Promissória (Inserção/Edição) - SA System 1.4");
@@ -109,6 +124,10 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				setVisible(false);
 				telaListagemPromissoria.setVisible(true);
+				telaListagemPromissoria.setLocationRelativeTo(null);
+				comboBoxClientes = new JComboBox<Cliente>();
+				comboBoxClientes.setSelectedItem(null);
+				promissoriaSalva = null;
 			}
 		});
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -120,8 +139,13 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		JButton btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setDefaultCloseOperation(EXIT_ON_CLOSE);
 				setVisible(false);
 				telaListagemPromissoria.setVisible(true);
+				telaListagemPromissoria.setLocationRelativeTo(null);
+				comboBoxClientes = new JComboBox<Cliente>();
+				comboBoxClientes.setSelectedItem(null);
+				promissoriaSalva = null;
 			}
 		});
 		btnConsultar.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -153,14 +177,14 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 				try {
 					
 					if (promissoriaSalva != null) {
-						promissoriaSalva.setCliente((Cliente)comboBoxClientes.getSelectedItem());
-//						promissoriaSalva.setDataDeVencimento(edtVencimento.getText());
+						
+						Cliente clienteSelecionado = (Cliente)comboBoxClientes.getSelectedItem();
+						System.out.println("========>"+clienteSelecionado.getCodigo());
+						
+						promissoriaSalva.setCliente(clienteSelecionado);
+						promissoriaSalva.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						promissoriaSalva.setDescricao(edtDescricao.getText());
-						if(comboBoxClientes.getSelectedIndex() == 0) {
-							promissoriaSalva.setQuitado(Quitado.SIM);
-						}else {
-							promissoriaSalva.setQuitado(Quitado.NAO);
-						}
+						promissoriaSalva.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
 						promissoriaSalva.setValor(new BigDecimal(edtValor.getText()));
 						
 						promissoriaClient.alterar(promissoriaSalva);
@@ -168,16 +192,12 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 					}else {
 						Promissoria novaPromissoria = new Promissoria();
 						novaPromissoria.setCliente((Cliente)comboBoxClientes.getSelectedItem());
-//						novaPromissoria.setDataDeVencimento(edtVencimento.getText());
+						novaPromissoria.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						novaPromissoria.setDescricao(edtDescricao.getText());
-						if(comboBoxClientes.getSelectedIndex() == 0) {
-							novaPromissoria.setQuitado(Quitado.SIM);
-						}else {
-							novaPromissoria.setQuitado(Quitado.NAO);
-						}
+						novaPromissoria.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
 						novaPromissoria.setValor(new BigDecimal(edtValor.getText()));
 						
-						novaPromissoria = promissoriaClient.inserir(novaPromissoria);
+						promissoriaSalva = promissoriaClient.inserir(novaPromissoria);
 						JOptionPane.showMessageDialog(contentPane, "Promissória inserida com sucesso");
 					}
 					
@@ -196,13 +216,8 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		
 		comboBoxQuitado = new JComboBox<Quitado>();
 		comboBoxQuitado.setFont(new Font("Dialog", Font.BOLD, 14));
-		comboBoxQuitado.setModel(new DefaultComboBoxModel(new String[] {"SIM", "NÃO"}));
-		
-		
-		//Colocar array list no ComboBox
-		ArrayList<String> lista = new ArrayList<String>();
-		lista.add("teste");
-		comboBoxClientes = new JComboBox(lista.toArray());
+		comboBoxQuitado.addItem(Quitado.SIM);
+		comboBoxQuitado.addItem(Quitado.NAO);
 		
 		comboBoxClientes.setFont(new Font("Dialog", Font.BOLD, 14));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);

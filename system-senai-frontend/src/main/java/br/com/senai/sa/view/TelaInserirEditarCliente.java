@@ -182,7 +182,7 @@ public class TelaInserirEditarCliente extends JFrame {
 						novoCliente.setDataDeAdmissao(LocalDate.now());
 						novoCliente.setUsuario(novoUsuario);
 						
-						novoCliente = clienteClient.inserir(novoCliente);
+						clienteSalvo = clienteClient.inserir(novoCliente);
 						JOptionPane.showMessageDialog(contentPane, "Cliente inserido com sucesso");
 					}
 					

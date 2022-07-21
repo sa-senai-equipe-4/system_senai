@@ -68,16 +68,6 @@ public class Cliente {
 	@Size(min=2, max = 500, message = "O tamanho do endereço completo do cliente deve estar entre 2 e 500 caracteres")
 	private String enderecoCompleto;
 	
-//	@Column(name = "login")
-//	@NotEmpty(message = "O login do cliente é obrigatório")
-//	@Size(min=2, max = 20, message = "O tamanho do login do cliente deve estar entre 2 e 20 caracteres")
-//	private String login;
-//	
-//	@Column(name = "senha")
-//	@NotEmpty(message = "A senha do cliente é obrigatória")
-//	@Size(min=2, max = 10, message = "A senha do cliente deve estar entre 2 e 10 caracteres")
-//	private String senha;
-	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "codigo_usuario")
 	@NotNull(message = "O usuário do cliente deve ser obrigatório")

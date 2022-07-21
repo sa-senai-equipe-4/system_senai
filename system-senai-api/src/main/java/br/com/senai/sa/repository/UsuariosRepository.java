@@ -15,11 +15,5 @@ public interface UsuariosRepository extends JpaRepository<Usuario, Integer>{
 			+ "WHERE u.login = :login "
 			+ "AND u.senha = :senha ")
 	Optional<Usuario> buscarParaLoginPor(String login, String senha);
-	
-	@Query(value = 
-			"SELECT u "
-			+ "FROM Usuario u "
-			+ "WHERE u.codigo = :codigo ")
-	Optional<Usuario> buscarPor(Integer codigo);
 
 }

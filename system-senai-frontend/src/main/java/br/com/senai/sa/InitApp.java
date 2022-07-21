@@ -2,7 +2,6 @@ package br.com.senai.sa;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.json.JSONObject;

@@ -54,6 +54,14 @@ public class ClienteService {
 			@NotEmpty(message = "O parâmetro nome completo deve ser informado") String nomeCompleto) {
 		return clientesRepository.listarPor("%"+nomeCompleto+"%");
 	}
+
+	public Cliente buscarPorCodigoDeUsuario(@NotNull(message =  "O código do usuário deve ser informado") Integer codigoDoUsuario) {
+		return clientesRepository.buscarPorUsuarioCom(codigoDoUsuario);
+	}
+
+	public List<Cliente> listarTodos() {
+		return clientesRepository.listarTodos();
+	}
 	
 
 }
