@@ -32,7 +32,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
-import br.com.senai.sa.client.ClienteClient;
 import br.com.senai.sa.client.PromissoriaClient;
 import br.com.senai.sa.dto.Cliente;
 import br.com.senai.sa.dto.Promissoria;
@@ -48,7 +47,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	private JTextField edtValor;
 	private JTextField edtVencimento;
 	private JTextPane edtDescricao;
-	private JComboBox<Cliente> comboBoxClientes = new JComboBox<Cliente>();
+	private JComboBox<Cliente> comboBoxClientes;
 	private JComboBox<Quitado> comboBoxQuitado;
 
 	@Autowired
@@ -56,12 +55,13 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	
 	private Promissoria promissoriaSalva;
 	
+	private final static Integer VAZIO = -1;
+	
 	@Lazy
 	@Autowired
 	private PromissoriaClient promissoriaClient;
 	
-	@Autowired
-	private ClienteClient clienteClient;
+	private Cliente clienteSelecionado;
 	
 	@Lazy
 	@Autowired
@@ -96,8 +96,9 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 				this.comboBoxClientes.setSelectedItem(c);
 			}
 		});
+		
 		if(promissoriaSalva == null) {
-			this.comboBoxClientes.setSelectedItem(null);
+			this.comboBoxClientes.setSelectedIndex(VAZIO);;
 		}
 		
 	}
@@ -108,7 +109,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		this.edtDescricao.setText("");
 		this.edtVencimento.setText("");
 		this.comboBoxQuitado.setSelectedItem(Quitado.NAO);
-		this.comboBoxClientes.setSelectedItem(null);
+		this.comboBoxClientes.setSelectedIndex(VAZIO);;
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -130,7 +131,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 				telaListagemPromissoria.setVisible(true);
 				telaListagemPromissoria.setLocationRelativeTo(null);
 				comboBoxClientes = new JComboBox<Cliente>();
-				comboBoxClientes.setSelectedItem(null);
+				comboBoxClientes.setSelectedIndex(VAZIO);
 				promissoriaSalva = new Promissoria();
 			}
 		});
@@ -147,7 +148,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 				telaListagemPromissoria.setVisible(true);
 				telaListagemPromissoria.setLocationRelativeTo(null);
 				comboBoxClientes = new JComboBox<Cliente>();
-				comboBoxClientes.setSelectedItem(null);
+				comboBoxClientes.setSelectedIndex(VAZIO);
 				promissoriaSalva = new Promissoria();
 			}
 		});
@@ -181,11 +182,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 					
 					if (promissoriaSalva != null) {
 						
-						Cliente clienteSelecionado = (Cliente)comboBoxClientes.getSelectedItem();
-						JOptionPane.showMessageDialog(null, "Cliente selecionado é o "+clienteSelecionado.getCodigo()+" - "+ clienteSelecionado.getNomeCompleto());
-						Cliente clienteEncontrado = clienteClient.buscarPor(clienteSelecionado.getCodigo());
-						
-						promissoriaSalva.setCliente(clienteEncontrado);
+						promissoriaSalva.setCliente(clienteSelecionado);
 						promissoriaSalva.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						promissoriaSalva.setDescricao(edtDescricao.getText());
 						promissoriaSalva.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
@@ -193,9 +190,11 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						
 						promissoriaClient.alterar(promissoriaSalva);
 						JOptionPane.showMessageDialog(contentPane, "Promissória atualizada com sucesso");
+						
 					}else {
+						
 						Promissoria novaPromissoria = new Promissoria();
-						novaPromissoria.setCliente((Cliente)comboBoxClientes.getSelectedItem());
+						novaPromissoria.setCliente(clienteSelecionado);
 						novaPromissoria.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						novaPromissoria.setDescricao(edtDescricao.getText());
 						novaPromissoria.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
@@ -203,6 +202,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						
 						promissoriaSalva = promissoriaClient.inserir(novaPromissoria);
 						JOptionPane.showMessageDialog(contentPane, "Promissória inserida com sucesso");
+						
 					}
 					
 				} catch (HttpClientErrorException ex) {
@@ -223,7 +223,13 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		comboBoxQuitado.addItem(Quitado.SIM);
 		comboBoxQuitado.addItem(Quitado.NAO);
 		
+		comboBoxClientes = new JComboBox<Cliente>();
 		comboBoxClientes.setFont(new Font("Dialog", Font.BOLD, 14));
+		comboBoxClientes.addActionListener(new ActionListener(){
+		    public void actionPerformed(ActionEvent evt) {
+		        clienteSelecionado = ((Cliente) comboBoxClientes.getSelectedItem()); 
+		    }
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

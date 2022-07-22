@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import br.com.senai.sa.entity.Cliente;
 import br.com.senai.sa.entity.Promissoria;
 import br.com.senai.sa.exception.RegistroNaoEncontradoException;
 import br.com.senai.sa.repository.PromissoriasRepository;
@@ -35,7 +36,8 @@ public class PromissoriaService {
 	
 	@Validated(AoInserir.class)
 	public Promissoria inserir(@Valid Promissoria promissoria) {
-		this.clienteService.buscarPor(promissoria.getCliente().getCodigo());
+		Cliente clienteEncontrado = this.clienteService.buscarPor(promissoria.getCliente().getCodigo());
+		promissoria.preencher(clienteEncontrado);
 		return promissoriasRepository.save(promissoria);
 	}
 	
@@ -44,7 +46,12 @@ public class PromissoriaService {
 	public Promissoria alterar(@Valid Promissoria promissoriaSalva) {
 		this.buscarPor(promissoriaSalva.getCodigo());
 		this.em.detach(promissoriasRepository.save(promissoriaSalva));
+		this.alterarClienteCom(promissoriaSalva.getCliente().getCodigo(), promissoriaSalva.getCodigo());
 		return promissoriasRepository.buscarPor(promissoriaSalva.getCodigo()).get();
+	}
+	
+	private void alterarClienteCom(Integer codigoDoCliente, Integer codigoDaPromissoria) {
+		this.promissoriasRepository.alterar(codigoDoCliente, codigoDaPromissoria);
 	}
 	
 	public void remover(@NotNull(message = "O código da promissória deve ser informado") Integer codigo) {

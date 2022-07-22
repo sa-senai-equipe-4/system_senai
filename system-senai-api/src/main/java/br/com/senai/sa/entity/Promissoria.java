@@ -69,5 +69,9 @@ public class Promissoria {
 	@JoinColumn(name = "codigo_cliente")
 	@NotNull(message = "O cliente da promissória é obrigatório")
 	private Cliente cliente;
+	
+	public void preencher(Cliente cliente) {
+		this.cliente = cliente;
+	}
 
 }
