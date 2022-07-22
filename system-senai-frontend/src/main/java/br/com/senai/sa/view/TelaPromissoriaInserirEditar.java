@@ -93,12 +93,16 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		clientes.forEach(c -> {
 			comboBoxClientes.addItem(c);
 			if(promissoriaSalva != null && promissoriaSalva.getCliente().equals(c)) {
-				this.comboBoxClientes.setSelectedItem(c);
+				
 			}
 		});
 		
+		
+		
 		if(promissoriaSalva == null) {
 			this.comboBoxClientes.setSelectedIndex(VAZIO);;
+		}else {
+			
 		}
 		
 	}
