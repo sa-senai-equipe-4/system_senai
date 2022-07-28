@@ -65,6 +65,7 @@ public class TelaInserirEditarCliente extends JFrame {
 		this.edtRg.setText(clienteSalvo.getRg());
 		this.edtEndereco.setText(clienteSalvo.getEnderecoCompleto());
 		this.edtLogin.setText(clienteSalvo.getUsuario().getLogin());
+		this.edtSenha.setText(clienteSalvo.getUsuario().getSenha());
 		this.clienteSalvo = clienteSalvo;
 		setLocationRelativeTo(null);
 		setVisible(true);

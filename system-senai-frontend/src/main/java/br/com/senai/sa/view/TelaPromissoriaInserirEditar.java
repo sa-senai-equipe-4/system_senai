@@ -47,6 +47,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	private JTextField edtValor;
 	private JTextField edtVencimento;
 	private JTextPane edtDescricao;
+	
 	private JComboBox<Cliente> comboBoxClientes;
 	private JComboBox<Quitado> comboBoxQuitado;
 
@@ -90,19 +91,15 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	public void carregarCombos(List<Cliente> clientes) {
 		this.clientesRegistrados = clientes;
 		
-		clientes.forEach(c -> {
-			comboBoxClientes.addItem(c);
+		this.clientesRegistrados.forEach(c -> {
+			this.comboBoxClientes.addItem(c);
 			if(promissoriaSalva != null && promissoriaSalva.getCliente().equals(c)) {
-				
+				this.comboBoxClientes.setSelectedItem(c);
 			}
 		});
 		
-		
-		
 		if(promissoriaSalva == null) {
 			this.comboBoxClientes.setSelectedIndex(VAZIO);;
-		}else {
-			
 		}
 		
 	}
@@ -151,9 +148,11 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 				setVisible(false);
 				telaListagemPromissoria.setVisible(true);
 				telaListagemPromissoria.setLocationRelativeTo(null);
-				comboBoxClientes = new JComboBox<Cliente>();
+				comboBoxClientes.removeAllItems();
 				comboBoxClientes.setSelectedIndex(VAZIO);
 				promissoriaSalva = new Promissoria();
+				telaListagemPromissoria.dispatchEvent(
+						new WindowEvent(telaListagemPromissoria, WindowEvent.WINDOW_CLOSING));
 			}
 		});
 		btnConsultar.setFont(new Font("Dialog", Font.BOLD, 14));
