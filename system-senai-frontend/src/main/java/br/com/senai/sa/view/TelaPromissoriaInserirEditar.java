@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -207,7 +208,8 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						JOptionPane.showMessageDialog(contentPane, "Promissória inserida com sucesso");
 						
 					}
-					
+				} catch (DateTimeException dtex) {
+					JOptionPane.showMessageDialog(btnSalvar, "Informe uma data válida");
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
 					JOptionPane.showMessageDialog(btnSalvar, msg);
