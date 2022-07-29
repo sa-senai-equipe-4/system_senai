@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -53,6 +54,7 @@ public class Promissoria {
 	
 	@Column(name = "dt_vencimento")
 	@NotNull(message = "A data de vencimento da promissória deve ser obrigatório")
+	@FutureOrPresent(message = "A data de vencimento não deve ser anterior a data atual")
 	private LocalDate dataDeVencimento;
 	
 	@Column(name = "quitado")

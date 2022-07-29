@@ -29,7 +29,7 @@ public interface ClientesRepository extends JpaRepository<Cliente, Integer>{
 			+ "FROM Cliente c "
 			+ "JOIN FETCH c.usuario u "
 			+ "WHERE u.codigo = :codigoDoUsuario ")
-	Cliente buscarPorUsuarioCom(Integer codigoDoUsuario);
+	Optional<Cliente> buscarPorUsuarioCom(Integer codigoDoUsuario);
 
 	@Query(value = 
 			"SELECT c "

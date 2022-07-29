@@ -105,7 +105,10 @@ public class TelaListagemPromissoria extends JFrame {
 						table.updateUI();
 						JOptionPane.showMessageDialog(contentPane, "Promissória removida com sucesso");
 					}
-					
+				} catch (IndexOutOfBoundsException iobe) {
+					JOptionPane.showMessageDialog(null, "Nenhuma promissória foi selecionada");
+				} catch (ClassCastException clb) {
+					JOptionPane.showMessageDialog(null, "Nenhuma promissória foi selecionada");
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
 					JOptionPane.showMessageDialog(null, msg);
@@ -117,20 +120,26 @@ public class TelaListagemPromissoria extends JFrame {
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int linhaSelecionada = table.getSelectedRow();
 				try {
-					PromissoriaListagemTableModel model = (PromissoriaListagemTableModel)table.getModel();
+					int linhaSelecionada = table.getSelectedRow();
 					
-					Promissoria promissoriaSelecionada = model.getPor(linhaSelecionada);
+					try {
+						PromissoriaListagemTableModel model = (PromissoriaListagemTableModel)table.getModel();
+						
+						Promissoria promissoriaSelecionada = model.getPor(linhaSelecionada);
+						
+						List<Cliente> clientes = clienteClient.listarTodos();
+						
+						telaPromissoriaInserirEditar.carregarTela(promissoriaSelecionada);
+						telaPromissoriaInserirEditar.carregarCombos(clientes);
+						setVisible(false);
+					} catch (HttpClientErrorException ex) {
+						String msg = erroFormatter.formatar(ex);
+						JOptionPane.showMessageDialog(null, msg);
+					}
 					
-					List<Cliente> clientes = clienteClient.listarTodos();
-					
-					telaPromissoriaInserirEditar.carregarTela(promissoriaSelecionada);
-					telaPromissoriaInserirEditar.carregarCombos(clientes);
-					setVisible(false);
-				} catch (HttpClientErrorException ex) {
-					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(null, msg);
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Nenhuma promissória foi selecionada");
 				}
 			}
 		});

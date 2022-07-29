@@ -99,9 +99,9 @@ public class TelaListagem extends JFrame {
 						JOptionPane.showMessageDialog(contentPane, "Cliente removido com sucesso");
 					}
 				} catch (IndexOutOfBoundsException iobe) {
-					JOptionPane.showMessageDialog(null, "Ao menos um cliente deve ser selecionado");
+					JOptionPane.showMessageDialog(null, "Nenhum cliente foi selecionado");
 				} catch (ClassCastException clb) {
-					JOptionPane.showMessageDialog(null, "Ao menos um cliente deve ser selecionado");
+					JOptionPane.showMessageDialog(null, "Nenhum cliente foi selecionado");
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
 					JOptionPane.showMessageDialog(null, msg);
@@ -121,7 +121,7 @@ public class TelaListagem extends JFrame {
 					telaInserirEditarCliente.carregarTela(clienteSelecionado);
 					setVisible(false);
 				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, "Ao menos um cliente deve ser selecionado");
+					JOptionPane.showMessageDialog(null, "Nenhum cliente foi selecionado");
 				}
 			}
 		});

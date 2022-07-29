@@ -3,8 +3,6 @@ package br.com.senai.sa.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -31,9 +29,6 @@ public class PromissoriaService {
 	@Autowired
 	private ClienteService clienteService;
 	
-	@PersistenceContext
-	private EntityManager em;
-	
 	@Validated(AoInserir.class)
 	public Promissoria inserir(@Valid Promissoria promissoria) {
 		Cliente clienteEncontrado = this.clienteService.buscarPor(promissoria.getCliente().getCodigo());
@@ -45,20 +40,15 @@ public class PromissoriaService {
 	@Validated(AoAlterar.class)
 	public Promissoria alterar(@Valid Promissoria promissoriaSalva) {
 		this.buscarPor(promissoriaSalva.getCodigo());
-		this.em.detach(promissoriasRepository.save(promissoriaSalva));
-		this.alterarClienteCom(promissoriaSalva.getCliente().getCodigo(), promissoriaSalva.getCodigo());
-		return promissoriasRepository.buscarPor(promissoriaSalva.getCodigo()).get();
+		return promissoriasRepository.save(promissoriaSalva);
 	}
-	
-	private void alterarClienteCom(Integer codigoDoCliente, Integer codigoDaPromissoria) {
-		this.promissoriasRepository.alterar(codigoDoCliente, codigoDaPromissoria);
-	}
-	
+
 	public void remover(@NotNull(message = "O código da promissória deve ser informado") Integer codigo) {
 		this.buscarPor(codigo);
 		this.promissoriasRepository.deleteById(codigo);
 	}
 	
+	@Transactional
 	public Promissoria buscarPor(@NotNull(message = "O código da promissória deve ser informado") Integer codigo) {
 		Optional<Promissoria> promissoriaEncontrada = promissoriasRepository.buscarPor(codigo);
 		
@@ -70,8 +60,8 @@ public class PromissoriaService {
 	}
 	
 	public List<Promissoria> buscarPor(
-			@NotEmpty(message = "O parâmetro do nome completo do cliente deve ser informado") String nomeCompleto) {
-		return promissoriasRepository.listarPor("%"+nomeCompleto+"%");
+			@NotEmpty(message = "O parâmetro da descrição da promissória deve ser informado") String descricao) {
+		return promissoriasRepository.listarPor("%"+descricao+"%");
 	}
 	
 

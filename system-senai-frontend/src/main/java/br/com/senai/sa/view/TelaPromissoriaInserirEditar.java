@@ -117,10 +117,30 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		setVisible(true);
 	}
 	
+	public BigDecimal converter(String valor) {
+		String valorFormatado = valor.replaceAll(",", ".");
+		BigDecimal valorDaPromissoria = null;
+		
+		try {
+			valorDaPromissoria = new BigDecimal(valorFormatado);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Valor deve ser informada");
+		}
+		return valorDaPromissoria;
+	}
+	
 	public LocalDate converter(String[] valores) {
-		Integer dia = Integer.parseInt(valores[0]);
-		Integer mes = Integer.parseInt(valores[1]);
-		Integer ano = Integer.parseInt(valores[2]);
+		Integer dia = 0;
+		Integer mes = 0;
+		Integer ano = 0;
+		try {
+			dia = Integer.parseInt(valores[0]);
+			mes = Integer.parseInt(valores[1]);
+			ano = Integer.parseInt(valores[2]);
+			
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Data de vencimento deve ser informada");
+		}
 		return LocalDate.of(ano, mes, dia);
 	}
 	
@@ -162,7 +182,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		JLabel lblValor = new JLabel("Valor (R$)");
 		lblValor.setFont(new Font("Dialog", Font.BOLD, 14));
 		
-		edtValor = new JFormattedTextField(new DecimalFormat("#,##0.00;(#,##0.00)"));
+		edtValor = new JFormattedTextField(new DecimalFormat("0.00"));
 		edtValor.setHorizontalAlignment(JTextField.RIGHT);
 		edtValor.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtValor.setColumns(10);
@@ -189,19 +209,12 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 					if (promissoriaSalva != null) {
 						
 						promissoriaSalva.setCliente(clienteSelecionado);
+						
 						promissoriaSalva.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						promissoriaSalva.setDescricao(edtDescricao.getText());
 						promissoriaSalva.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
 						
-						String valor = edtValor.getText();
-						
-						System.out.println("==========>"+valor);
-						
-						String valorFormatado = valor.replaceAll(",", ".");
-						
-						System.out.println("==========>"+valorFormatado);
-						
-						promissoriaSalva.setValor(new BigDecimal(valorFormatado));
+						promissoriaSalva.setValor(converter(edtValor.getText()));
 						
 						promissoriaClient.alterar(promissoriaSalva);
 						JOptionPane.showMessageDialog(null, "Promissória atualizada com sucesso");
@@ -210,19 +223,12 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						
 						Promissoria novaPromissoria = new Promissoria();
 						novaPromissoria.setCliente(clienteSelecionado);
+						
 						novaPromissoria.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						novaPromissoria.setDescricao(edtDescricao.getText());
 						novaPromissoria.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
 						
-						String valor = edtValor.getText();
-						
-						System.out.println("==========>"+valor);
-						
-						String valorFormatado = valor.replaceAll(".", ",").replaceAll(".", ",");
-						
-						System.out.println("==========>"+valorFormatado);
-						
-						novaPromissoria.setValor(new BigDecimal(valorFormatado));
+						novaPromissoria.setValor(converter(edtValor.getText()));
 						
 						promissoriaSalva = promissoriaClient.inserir(novaPromissoria);
 						JOptionPane.showMessageDialog(null, "Promissória inserida com sucesso");

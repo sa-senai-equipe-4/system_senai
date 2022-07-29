@@ -74,7 +74,14 @@ public class ClienteService {
 	}
 
 	public Cliente buscarPorCodigoDeUsuario(@NotNull(message =  "O código do usuário deve ser informado") Integer codigoDoUsuario) {
-		return clientesRepository.buscarPorUsuarioCom(codigoDoUsuario);
+		
+		Optional<Cliente> clienteEncontrado = clientesRepository.buscarPorUsuarioCom(codigoDoUsuario);
+		
+		if(clienteEncontrado.isPresent()) {
+			return clienteEncontrado.get();
+		}
+		
+		throw new RegistroNaoEncontradoException("Cliente não encontrado");
 	}
 
 	public List<Cliente> listarTodos() {
