@@ -65,6 +65,7 @@ public class TelaLogin extends JFrame {
 		lblLogin.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtLogin = new JTextField();
+		edtLogin.setText("laudelino.neto");
 		edtLogin.setToolTipText("Insira aqui seu login...");
 		edtLogin.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtLogin.setColumns(10);
@@ -73,6 +74,7 @@ public class TelaLogin extends JFrame {
 		lblSenha.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtSenha = new JPasswordField();
+		edtSenha.setText("123456");
 		edtSenha.setToolTipText("Insira a senha aqui...");
 		edtSenha.setFont(new Font("Dialog", Font.PLAIN, 14));
 		

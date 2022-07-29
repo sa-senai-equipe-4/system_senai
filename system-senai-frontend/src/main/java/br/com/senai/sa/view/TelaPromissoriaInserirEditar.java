@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -161,7 +162,8 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		JLabel lblValor = new JLabel("Valor (R$)");
 		lblValor.setFont(new Font("Dialog", Font.BOLD, 14));
 		
-		edtValor = new JTextField();
+		edtValor = new JFormattedTextField(new DecimalFormat("#,##0.00;(#,##0.00)"));
+		edtValor.setHorizontalAlignment(JTextField.RIGHT);
 		edtValor.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtValor.setColumns(10);
 		
@@ -190,10 +192,19 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						promissoriaSalva.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						promissoriaSalva.setDescricao(edtDescricao.getText());
 						promissoriaSalva.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
-						promissoriaSalva.setValor(new BigDecimal(edtValor.getText()));
+						
+						String valor = edtValor.getText();
+						
+						System.out.println("==========>"+valor);
+						
+						String valorFormatado = valor.replaceAll(",", ".");
+						
+						System.out.println("==========>"+valorFormatado);
+						
+						promissoriaSalva.setValor(new BigDecimal(valorFormatado));
 						
 						promissoriaClient.alterar(promissoriaSalva);
-						JOptionPane.showMessageDialog(contentPane, "Promissória atualizada com sucesso");
+						JOptionPane.showMessageDialog(null, "Promissória atualizada com sucesso");
 						
 					}else {
 						
@@ -202,18 +213,27 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						novaPromissoria.setDataDeVencimento(converter(edtVencimento.getText().split("/")));
 						novaPromissoria.setDescricao(edtDescricao.getText());
 						novaPromissoria.setQuitado((Quitado)comboBoxQuitado.getSelectedItem());
-						novaPromissoria.setValor(new BigDecimal(edtValor.getText()));
+						
+						String valor = edtValor.getText();
+						
+						System.out.println("==========>"+valor);
+						
+						String valorFormatado = valor.replaceAll(".", ",").replaceAll(".", ",");
+						
+						System.out.println("==========>"+valorFormatado);
+						
+						novaPromissoria.setValor(new BigDecimal(valorFormatado));
 						
 						promissoriaSalva = promissoriaClient.inserir(novaPromissoria);
-						JOptionPane.showMessageDialog(contentPane, "Promissória inserida com sucesso");
+						JOptionPane.showMessageDialog(null, "Promissória inserida com sucesso");
 						
 					}
 				} catch (DateTimeException dtex) {
-					JOptionPane.showMessageDialog(btnSalvar, "Informe uma data válida");
+					JOptionPane.showMessageDialog(null, "Informe uma data válida");
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnSalvar, msg);
-				}
+					JOptionPane.showMessageDialog(null, msg);
+				} 
 			}
 		});
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 14));

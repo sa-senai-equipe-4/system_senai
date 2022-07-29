@@ -141,11 +141,11 @@ public class TelaEditarCliente extends JFrame {
 					}
 					
 					clienteClient.alterar(clienteSalvo);
-					JOptionPane.showMessageDialog(contentPane, "Cliente atualizado com sucesso");
+					JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso");
 					
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnSalvar, msg);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});

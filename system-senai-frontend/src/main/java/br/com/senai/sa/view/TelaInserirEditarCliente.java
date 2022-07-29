@@ -165,7 +165,7 @@ public class TelaInserirEditarCliente extends JFrame {
 						}
 						
 						clienteClient.alterar(clienteSalvo);
-						JOptionPane.showMessageDialog(contentPane, "Cliente atualizado com sucesso");
+						JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso");
 					}else {
 						Cliente novoCliente = new Cliente();
 						novoCliente.setNomeCompleto(edtNomeCompleto.getText());
@@ -184,12 +184,12 @@ public class TelaInserirEditarCliente extends JFrame {
 						novoCliente.setUsuario(novoUsuario);
 						
 						clienteSalvo = clienteClient.inserir(novoCliente);
-						JOptionPane.showMessageDialog(contentPane, "Cliente inserido com sucesso");
+						JOptionPane.showMessageDialog(null, "Cliente inserido com sucesso");
 					}
 					
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnSalvar, msg);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});

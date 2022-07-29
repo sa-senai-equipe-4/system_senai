@@ -98,10 +98,13 @@ public class TelaListagem extends JFrame {
 						table.updateUI();
 						JOptionPane.showMessageDialog(contentPane, "Cliente removido com sucesso");
 					}
-					
+				} catch (IndexOutOfBoundsException iobe) {
+					JOptionPane.showMessageDialog(null, "Ao menos um cliente deve ser selecionado");
+				} catch (ClassCastException clb) {
+					JOptionPane.showMessageDialog(null, "Ao menos um cliente deve ser selecionado");
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnRemover, msg);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});
@@ -110,12 +113,16 @@ public class TelaListagem extends JFrame {
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int linhaSelecionada = table.getSelectedRow();
-				ClienteListagemTableModel model = (ClienteListagemTableModel)table.getModel();
-				
-				Cliente clienteSelecionado = model.getPor(linhaSelecionada);
-				telaInserirEditarCliente.carregarTela(clienteSelecionado);
-				setVisible(false);
+				try {
+					int linhaSelecionada = table.getSelectedRow();
+					ClienteListagemTableModel model = (ClienteListagemTableModel)table.getModel();
+					
+					Cliente clienteSelecionado = model.getPor(linhaSelecionada);
+					telaInserirEditarCliente.carregarTela(clienteSelecionado);
+					setVisible(false);
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Ao menos um cliente deve ser selecionado");
+				}
 			}
 		});
 		btnEditar.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -141,7 +148,7 @@ public class TelaListagem extends JFrame {
 					table.updateUI();
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnListar, msg);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});

@@ -2,6 +2,8 @@ package br.com.senai.sa.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +12,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import com.google.common.base.Preconditions;
 
 import br.com.senai.sa.entity.Cliente;
 import br.com.senai.sa.exception.RegistroNaoEncontradoException;
@@ -24,14 +28,19 @@ public class ClienteService {
 	@Autowired
 	private ClientesRepository clientesRepository;
 	
+	private static final String PATTERN = 
+			"((?=.*\\d)(?=.*[a-z]).{2,})";
+	
 	@Validated(AoInserir.class)
 	public Cliente inserir(@Valid Cliente cliente) {
+		Preconditions.checkArgument(validaSenha(cliente.getUsuario().getSenha()), "A senha deve conter letras e números");
 		return clientesRepository.save(cliente);
 	}
 	
 	@Validated(AoAlterar.class)
 	public Cliente alterar(@Valid Cliente cliente) {
 		this.buscarPor(cliente.getCodigo());
+		Preconditions.checkArgument(validaSenha(cliente.getUsuario().getSenha()), "A senha deve conter letras e números");
 		return clientesRepository.save(cliente);
 	}
 	
@@ -48,6 +57,15 @@ public class ClienteService {
 		}
 		
 		throw new RegistroNaoEncontradoException("Cliente não encontrado");
+	}
+	
+	private boolean validaSenha(String senha) {
+		Pattern pattern = Pattern.compile(PATTERN);
+		Matcher matcher = pattern.matcher(senha);
+		if(matcher.matches()) {
+			return true;
+		}
+		return false;
 	}
 	
 	public List<Cliente> buscarPor(

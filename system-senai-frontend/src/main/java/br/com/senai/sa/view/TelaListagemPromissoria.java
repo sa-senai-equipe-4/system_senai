@@ -108,7 +108,7 @@ public class TelaListagemPromissoria extends JFrame {
 					
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnRemover, msg);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});
@@ -130,7 +130,7 @@ public class TelaListagemPromissoria extends JFrame {
 					setVisible(false);
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnRemover, msg);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});
@@ -158,7 +158,7 @@ public class TelaListagemPromissoria extends JFrame {
 					table.updateUI();
 				} catch (HttpClientErrorException ex) {
 					String msg = erroFormatter.formatar(ex);
-					JOptionPane.showMessageDialog(btnListar, msg);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});
