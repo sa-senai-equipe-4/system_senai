@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.senai.sa.dto.Usuario;
 import lombok.Getter;
+import javax.swing.border.LineBorder;
 
 @Component
 public class TelaPrincipalGestor extends JFrame {
@@ -97,6 +98,7 @@ public class TelaPrincipalGestor extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Dialog", Font.BOLD, 14));
+		txtpnUsuarioLogado.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
 		
 		txtpnUsuarioLogado.setEditable(false);
@@ -104,6 +106,7 @@ public class TelaPrincipalGestor extends JFrame {
 		txtpnUsuarioLogado.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JTextPane txtpnTextoUsuarioLogado = new JTextPane();
+		txtpnTextoUsuarioLogado.setBorder(new LineBorder(new Color(0, 0, 0)));
 		txtpnTextoUsuarioLogado.setBackground(Color.WHITE);
 		txtpnTextoUsuarioLogado.setText("Usuário logado");
 		txtpnTextoUsuarioLogado.setForeground(Color.BLACK);

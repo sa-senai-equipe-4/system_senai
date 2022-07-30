@@ -3,6 +3,8 @@ package br.com.senai.sa.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -14,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -22,9 +25,6 @@ import org.springframework.stereotype.Component;
 import br.com.senai.sa.client.ClienteClient;
 import br.com.senai.sa.dto.Cliente;
 import br.com.senai.sa.dto.Usuario;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 @Component
 public class TelaPrincipalCliente extends JFrame {
@@ -87,12 +87,14 @@ public class TelaPrincipalCliente extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Dialog", Font.BOLD, 14));
+		txtpnUsuarioLogado.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
 		txtpnUsuarioLogado.setEditable(false);
 		txtpnUsuarioLogado.setForeground(Color.BLACK);
 		txtpnUsuarioLogado.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JTextPane txtpnTextoUsuarioLogado = new JTextPane();
+		txtpnTextoUsuarioLogado.setBorder(new LineBorder(new Color(0, 0, 0)));
 		txtpnTextoUsuarioLogado.setBackground(Color.WHITE);
 		txtpnTextoUsuarioLogado.setText("UsuárioLogado");
 		txtpnTextoUsuarioLogado.setForeground(Color.BLACK);

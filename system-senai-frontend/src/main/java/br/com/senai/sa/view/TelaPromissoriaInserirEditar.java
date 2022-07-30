@@ -23,9 +23,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
@@ -48,7 +50,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 	private JPanel contentPane;
 	private JTextField edtValor;
 	private JTextField edtVencimento;
-	private JTextPane edtDescricao;
+	private JTextArea edtDescricao = new JTextArea();
 	
 	private JComboBox<Cliente> comboBoxClientes;
 	private JComboBox<Quitado> comboBoxQuitado;
@@ -247,7 +249,8 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		JLabel lblDescricao = new JLabel("Descrição dos Produtos e/ou Serviços");
 		lblDescricao.setFont(new Font("Dialog", Font.BOLD, 14));
 		
-		edtDescricao = new JTextPane();
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		comboBoxQuitado = new JComboBox<Quitado>();
 		comboBoxQuitado.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -270,7 +273,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(comboBoxClientes, 0, 730, Short.MAX_VALUE)
 							.addContainerGap())
-						.addComponent(edtDescricao, GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 742, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnConsultar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -315,10 +318,14 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 					.addGap(18)
 					.addComponent(lblDescricao)
 					.addGap(18)
-					.addComponent(edtDescricao, GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 180, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
 		);
+		edtDescricao.setFont(new Font("Dialog", Font.PLAIN, 14));
+		scrollPane.setViewportView(edtDescricao);
+		edtDescricao.setWrapStyleWord(true);
+		edtDescricao.setLineWrap(true);
 		contentPane.setLayout(gl_contentPane);
 	}
 }
