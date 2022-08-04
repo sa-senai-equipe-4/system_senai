@@ -109,12 +109,13 @@ public class TelaPrincipalCliente extends JFrame {
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(txtpnTextoUsuarioLogado, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(txtpnUsuarioLogado, GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
+							.addComponent(txtpnUsuarioLogado, GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(258)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnCliente, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE))
+								.addComponent(btnCliente, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+								.addComponent(btnSair, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
 							.addGap(264))))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -129,7 +130,7 @@ public class TelaPrincipalCliente extends JFrame {
 							.addComponent(btnCliente, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
 							.addComponent(txtpnUsuarioLogado, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
 					.addGap(13))
 		);
