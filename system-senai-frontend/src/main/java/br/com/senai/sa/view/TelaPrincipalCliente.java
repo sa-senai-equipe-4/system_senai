@@ -83,7 +83,8 @@ public class TelaPrincipalCliente extends JFrame {
 		JButton btnSair = new JButton("Sair");
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				setVisible(false);
+				telaLogin.setVisible(true);
 			}
 		});
 		btnSair.setFont(new Font("Dialog", Font.BOLD, 14));

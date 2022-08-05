@@ -66,7 +66,7 @@ public class ClienteClient {
 		RestTemplate httpClient = builder.build();
 		
 		List<LinkedHashMap<String, Object>> response = httpClient.getForObject(
-				urlEndpoint + resource + "?nome-completo=" + nomeCompleto, List.class);
+				urlEndpoint + resource + "/nome-completo/" + nomeCompleto, List.class);
 		
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		
@@ -94,7 +94,7 @@ public class ClienteClient {
 		
 		@SuppressWarnings("unchecked")
 		List<LinkedHashMap<String, Object>> response = httpClient.getForObject(
-				urlEndpoint + resource + "/listar-todos", List.class);
+				urlEndpoint + resource, List.class);
 		
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		

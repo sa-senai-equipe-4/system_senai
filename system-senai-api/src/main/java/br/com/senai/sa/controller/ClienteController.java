@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.senai.sa.controller.converter.MapConverter;
@@ -55,12 +54,12 @@ public class ClienteController {
 		return ResponseEntity.ok().build();
 	}
 	
-	@GetMapping
-	public ResponseEntity<?> buscarPor(@RequestParam(name = "nome-completo") String nomeCompleto){
+	@GetMapping("/nome-completo/{nome-completo}")
+	public ResponseEntity<?> buscarPor(@PathVariable(name = "nome-completo") String nomeCompleto){
 		return ResponseEntity.ok(mapConverter.toJsonList(clienteService.buscarPor(nomeCompleto)));
 	}
 	
-	@GetMapping("/listar-todos")
+	@GetMapping
 	public ResponseEntity<?> listarTodos(){
 		return ResponseEntity.ok(mapConverter.toJsonList(clienteService.listarTodos()));
 	}
