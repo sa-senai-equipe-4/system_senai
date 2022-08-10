@@ -29,7 +29,7 @@ public class ClienteService {
 	private ClientesRepository clientesRepository;
 	
 	private static final String PATTERN = 
-			"((?=.*\\d)(?=.*[a-z]).{2,})";
+			"((?=.*\\d)(?=.*[a-zA-Z]).{2,})";
 	
 	@Validated(AoInserir.class)
 	public Cliente inserir(@Valid Cliente cliente) {
