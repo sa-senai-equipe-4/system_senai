@@ -2,6 +2,7 @@ package br.com.senai.sa.service;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,10 @@ public class UsuarioService {
 		}
 		
 		throw new RegistroNaoEncontradoException("O login ou a senha são inválidos");
+	}
+	
+	public Usuario inserirAdmin(@Valid Usuario admin) {
+		return usuariosRepository.save(admin);
 	}
 
 }
