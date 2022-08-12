@@ -16,8 +16,10 @@ import org.springframework.validation.annotation.Validated;
 import com.google.common.base.Preconditions;
 
 import br.com.senai.sa.entity.Cliente;
+import br.com.senai.sa.entity.Promissoria;
 import br.com.senai.sa.exception.RegistroNaoEncontradoException;
 import br.com.senai.sa.repository.ClientesRepository;
+import br.com.senai.sa.repository.PromissoriasRepository;
 import br.com.senai.sa.validation.AoAlterar;
 import br.com.senai.sa.validation.AoInserir;
 
@@ -27,6 +29,9 @@ public class ClienteService {
 	
 	@Autowired
 	private ClientesRepository clientesRepository;
+	
+	@Autowired
+	private PromissoriasRepository promissoriasRepository;
 	
 	private static final String PATTERN = 
 			"((?=.*\\d)(?=.*[a-zA-Z]).{2,})";
@@ -46,6 +51,8 @@ public class ClienteService {
 	
 	public void remover(@NotNull(message =  "O código do cliente deve ser informado") Integer codigo) {
 		this.buscarPor(codigo);
+		List<Promissoria> promissoriasDoCliente = promissoriasRepository.listarPor(codigo);
+		Preconditions.checkArgument(promissoriasDoCliente.size() == 0, "Não é possível remover clientes com promisssória gerada");
 		this.clientesRepository.deleteById(codigo);
 	}
 	

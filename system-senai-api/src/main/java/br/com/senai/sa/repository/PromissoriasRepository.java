@@ -25,5 +25,13 @@ public interface PromissoriasRepository extends JpaRepository<Promissoria, Integ
 			+ "JOIN FETCH c.usuario "
 			+ "WHERE Upper(p.descricao) LIKE Upper(:descricao) ")
 	List<Promissoria> listarPor(String descricao);
+	
+	@Query(value = 
+			"SELECT p "
+			+ "FROM Promissoria p "
+			+ "JOIN FETCH p.cliente c "
+			+ "JOIN FETCH c.usuario "
+			+ "WHERE p.cliente.id = :idDoCliente ")
+	List<Promissoria> listarPor(Integer idDoCliente);
 
 }

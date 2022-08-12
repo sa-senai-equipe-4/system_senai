@@ -64,5 +64,4 @@ public class PromissoriaService {
 		return promissoriasRepository.listarPor("%"+descricao+"%");
 	}
 	
-
 }
