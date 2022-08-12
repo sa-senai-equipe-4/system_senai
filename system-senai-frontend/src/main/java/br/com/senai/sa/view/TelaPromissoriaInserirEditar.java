@@ -167,6 +167,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		setContentPane(contentPane);
 		
 		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.setToolTipText("Ao Clicar esse botão você ira para tela de listagem de promissórias...");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -182,27 +183,34 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		btnConsultar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JLabel lblValor = new JLabel("Valor (R$)");
+		lblValor.setToolTipText("Campo Obrigatório");
 		lblValor.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtValor = new JFormattedTextField(new DecimalFormat("0.00"));
+		edtValor.setToolTipText("Insira aqui o valor da promissória...");
 		edtValor.setHorizontalAlignment(JTextField.RIGHT);
 		edtValor.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtValor.setColumns(10);
 		
 		JLabel lblVencimento = new JLabel("Vencimento");
+		lblVencimento.setToolTipText("Campo Obrigatório");
 		lblVencimento.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtVencimento = new JFormattedTextField(new MaskFormatter("##/##/####"));
+		edtVencimento.setToolTipText("Insira aqui a data de vencimento da promissória...");
 		edtVencimento.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtVencimento.setColumns(10);
 		
 		JLabel lblQuitado = new JLabel("Quitado");
+		lblQuitado.setToolTipText("Campo Obrigatório");
 		lblQuitado.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JLabel lblCliente = new JLabel("Cliente");
+		lblCliente.setToolTipText("Campo Obrigatório");
 		lblCliente.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setToolTipText("Ao Clicar esse botão você ira salvar os dados acima...");
 		getRootPane().setDefaultButton(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -247,17 +255,20 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JLabel lblDescricao = new JLabel("Descrição dos Produtos e/ou Serviços");
+		lblDescricao.setToolTipText("Campo Obrigatório");
 		lblDescricao.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		comboBoxQuitado = new JComboBox<Quitado>();
+		comboBoxQuitado.setToolTipText("Selecione sim ou não para a quitação da promissória...");
 		comboBoxQuitado.setFont(new Font("Dialog", Font.BOLD, 14));
 		comboBoxQuitado.addItem(Quitado.SIM);
 		comboBoxQuitado.addItem(Quitado.NAO);
 		
 		comboBoxClientes = new JComboBox<Cliente>();
+		comboBoxClientes.setToolTipText("Selecione o cliente da promissória...");
 		comboBoxClientes.setFont(new Font("Dialog", Font.BOLD, 14));
 		comboBoxClientes.addActionListener(new ActionListener(){
 		    public void actionPerformed(ActionEvent evt) {
@@ -325,6 +336,7 @@ public class TelaPromissoriaInserirEditar extends JFrame {
 					.addGap(18)
 					.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
 		);
+		edtDescricao.setToolTipText("Insira aqui a descrição da promissória...");
 		edtDescricao.setFont(new Font("Dialog", Font.PLAIN, 14));
 		scrollPane.setViewportView(edtDescricao);
 		edtDescricao.setWrapStyleWord(true);

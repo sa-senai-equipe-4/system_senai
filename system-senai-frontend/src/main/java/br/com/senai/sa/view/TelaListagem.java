@@ -71,6 +71,7 @@ public class TelaListagem extends JFrame {
 		setContentPane(contentPane);
 		
 		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.setToolTipText("Ao Clicar esse botão você ira para tela de inserção de novo cliente...");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaInserirEditarCliente.modoDeInsercao();
@@ -80,6 +81,7 @@ public class TelaListagem extends JFrame {
 		btnAdicionar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnRemover = new JButton("Remover");
+		btnRemover.setToolTipText("Ao Clicar esse botão você ira excluir o cliente selecionado na tabela acima...");
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -111,6 +113,7 @@ public class TelaListagem extends JFrame {
 		btnRemover.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.setToolTipText("Ao Clicar esse botão você ira editar o cliente selecionado na tabela acima...");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -131,10 +134,12 @@ public class TelaListagem extends JFrame {
 		lblFiltro.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtFiltro = new JTextField();
+		edtFiltro.setToolTipText("Insira aqui o nome do cliente que você quer pesquisar...");
 		edtFiltro.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtFiltro.setColumns(10);
 		
 		JButton btnListar = new JButton("Listar");
+		btnListar.setToolTipText("Ao Clicar esse botão sera mostrado na tabela abaixo os clientes referente ao nome no campo acima...");
 		getRootPane().setDefaultButton(btnListar);
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

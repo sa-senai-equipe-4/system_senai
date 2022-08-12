@@ -72,6 +72,7 @@ public class TelaPrincipalCliente extends JFrame {
 		setContentPane(contentPanel);
 		
 		JButton btnCliente = new JButton("Cliente");
+		btnCliente.setToolTipText("Ao Clicar esse botão você ira para tela de edição do seu cadastro...");
 		btnCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaEditarCliente.carregar(clienteLogado);
@@ -81,6 +82,7 @@ public class TelaPrincipalCliente extends JFrame {
 		btnCliente.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnSair = new JButton("Sair");
+		btnSair.setToolTipText("Ao Clicar esse botão você ira para tela de login...");
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -88,6 +90,7 @@ public class TelaPrincipalCliente extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Dialog", Font.BOLD, 14));
+		txtpnUsuarioLogado.setToolTipText("Usuário que você esta usando...");
 		txtpnUsuarioLogado.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
 		txtpnUsuarioLogado.setEditable(false);

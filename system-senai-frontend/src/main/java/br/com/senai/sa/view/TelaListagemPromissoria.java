@@ -75,6 +75,7 @@ public class TelaListagemPromissoria extends JFrame {
 		setContentPane(contentPane);
 		
 		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.setToolTipText("Ao Clicar esse botão você ira para tela de inserção de nova promissória...");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaPromissoriaInserirEditar.modoDeInsercao();
@@ -87,6 +88,7 @@ public class TelaListagemPromissoria extends JFrame {
 		btnAdicionar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnRemover = new JButton("Remover");
+		btnRemover.setToolTipText("Ao Clicar esse botão você ira excluir a promissória selecionado na tabela acima...");
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -118,6 +120,7 @@ public class TelaListagemPromissoria extends JFrame {
 		btnRemover.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.setToolTipText("Ao Clicar esse botão você ira editar a promissória selecionado na tabela acima...");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -149,10 +152,12 @@ public class TelaListagemPromissoria extends JFrame {
 		lblFiltro.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtFiltro = new JTextField();
+		edtFiltro.setToolTipText("Insira aqui a descrição da promissória que você quer pesquisar...");
 		edtFiltro.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtFiltro.setColumns(10);
 		
 		JButton btnListar = new JButton("Listar");
+		btnListar.setToolTipText("Ao Clicar esse botão sera mostrado na tabela abaixo as promissórias referente a descrição no campo acima...");
 		getRootPane().setDefaultButton(btnListar);
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

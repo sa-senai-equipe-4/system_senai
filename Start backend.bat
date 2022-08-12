@@ -1,0 +1,1 @@
+java -jar sa-senai-0.0.1-SNAPSHOT.jar

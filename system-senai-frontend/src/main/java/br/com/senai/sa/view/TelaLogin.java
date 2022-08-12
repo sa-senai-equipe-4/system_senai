@@ -53,6 +53,7 @@ public class TelaLogin extends JFrame {
 	public TelaLogin() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/image.png"));
 		setForeground(Color.RED);
+		setResizable(false);
 		setFont(new Font("Dialog", Font.BOLD, 14));
 		setTitle("Login - SA System 1.4");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,14 +63,16 @@ public class TelaLogin extends JFrame {
 		setContentPane(contentPanel);
 		
 		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setToolTipText("Campo Obrigatório");
 		lblLogin.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtLogin = new JTextField();
-		edtLogin.setToolTipText("Insira aqui seu login...");
+		edtLogin.setToolTipText("Insira seu login aqui...");
 		edtLogin.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtLogin.setColumns(10);
 		
 		lblSenha = new JLabel("Senha");
+		lblSenha.setToolTipText("Campo Obrigatório");
 		lblSenha.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtSenha = new JPasswordField();
@@ -77,6 +80,7 @@ public class TelaLogin extends JFrame {
 		edtSenha.setFont(new Font("Dialog", Font.PLAIN, 14));
 		
 		JButton btnLogar = new JButton("Logar");
+		btnLogar.setToolTipText("Clique aqui para logar...");
 		getRootPane().setDefaultButton(btnLogar);
 		btnLogar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

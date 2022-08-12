@@ -87,44 +87,56 @@ public class TelaEditarCliente extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel lblNomeCompleto = new JLabel("Nome Completo");
+		lblNomeCompleto.setToolTipText("Campo Obrigatório");
 		lblNomeCompleto.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtNomeCompleto = new JTextField();
+		edtNomeCompleto.setToolTipText("Insira aqui o nome completo do cliente...");
 		edtNomeCompleto.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtNomeCompleto.setColumns(10);
 		
 		JLabel lblCpf = new JLabel("CPF");
+		lblCpf.setToolTipText("Campo Obrigatório");
 		lblCpf.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtCpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
+		edtCpf.setToolTipText("Insira aqui o cpf do cliente...");
 		edtCpf.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtCpf.setColumns(10);
 		
 		edtRg = new JFormattedTextField(new MaskFormatter("##.###.###"));
+		edtRg.setToolTipText("Insira aqui o rg do cliente...");
 		edtRg.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtRg.setColumns(10);
 		
 		JLabel lblRg = new JLabel("RG");
+		lblRg.setToolTipText("Campo Obrigatório");
 		lblRg.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JLabel lblEndereco = new JLabel("Endereço Completo");
+		lblEndereco.setToolTipText("Campo Obrigatório");
 		lblEndereco.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtEndereco = new JTextField();
+		edtEndereco.setToolTipText("Insira aqui o endereço completo do cliente...");
 		edtEndereco.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtEndereco.setColumns(10);
 		
 		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setToolTipText("Campo Obrigatório");
 		lblLogin.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtLogin = new JTextField();
+		edtLogin.setToolTipText("Insira aqui o login do cliente...");
 		edtLogin.setFont(new Font("Dialog", Font.PLAIN, 14));
 		edtLogin.setColumns(10);
 		
 		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setToolTipText("Campo Obrigatório");
 		lblSenha.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setToolTipText("Ao Clicar esse botão você ira salvar os dados acima...");
 		getRootPane().setDefaultButton(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -152,6 +164,7 @@ public class TelaEditarCliente extends JFrame {
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		edtSenha = new JPasswordField();
+		edtSenha.setToolTipText("Insira aqui a senha do cliente...");
 		edtSenha.setFont(new Font("Dialog", Font.PLAIN, 14));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(

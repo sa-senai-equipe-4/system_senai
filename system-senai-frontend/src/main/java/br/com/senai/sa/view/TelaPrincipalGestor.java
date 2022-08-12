@@ -72,6 +72,7 @@ public class TelaPrincipalGestor extends JFrame {
 		setContentPane(contentPanel);
 		
 		JButton btnClientes = new JButton("Clientes");
+		btnClientes.setToolTipText("Ao Clicar esse botão você ira para tela de listagem de clientes...");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaListagem.setLocationRelativeTo(null);
@@ -82,6 +83,7 @@ public class TelaPrincipalGestor extends JFrame {
 		btnClientes.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnPromissórias = new JButton("Promissórias");
+		btnPromissórias.setToolTipText("Ao Clicar esse botão você ira para tela de listagem de promissórias...");
 		btnPromissórias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaListagemPromissoria.setVisible(true);
@@ -92,6 +94,7 @@ public class TelaPrincipalGestor extends JFrame {
 		btnPromissórias.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JButton btnSair = new JButton("Sair");
+		btnSair.setToolTipText("Ao Clicar esse botão você ira para tela de login...");
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -99,6 +102,7 @@ public class TelaPrincipalGestor extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Dialog", Font.BOLD, 14));
+		txtpnUsuarioLogado.setToolTipText("Usuário que você esta usando...");
 		txtpnUsuarioLogado.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
 		
